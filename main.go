@@ -9,7 +9,7 @@ import (
 )
 
 type Person struct {
-	ID        string   `json:"id,omitempty"`
+	Id        string   `json:"id,omitempty"`
 	FirstName string   `json:"firstname,omitempty"`
 	LastName  string   `json:"lastname,omitempty"`
 	Address   *Address `json:"address,omitempty"`
@@ -27,7 +27,14 @@ func GetPeople(w http.ResponseWriter, req *http.Request) {
 }
 
 func GetPerson(w http.ResponseWriter, req *http.Request) {
+	params := mux.Vars(req)
 
+	for _, item := range people {
+		if item.Id == params["id"] {
+			json.NewEncoder(w).Encode(item)
+			return
+		}
+	}
 }
 
 func CreatePerson(w http.ResponseWriter, req *http.Request) {
@@ -46,7 +53,7 @@ func main() {
 	router := mux.NewRouter()
 
 	people = append(people, Person{
-		ID:        "1",
+		Id:        "1",
 		FirstName: "Ryan",
 		LastName:  "Ray",
 		Address: &Address{
@@ -56,7 +63,7 @@ func main() {
 	})
 
 	people = append(people, Person{
-		ID:        "2",
+		Id:        "2",
 		FirstName: "Joe",
 		LastName:  "McMillan",
 	})
