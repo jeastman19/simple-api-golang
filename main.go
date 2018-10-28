@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/gorilla/mux"
 )
@@ -40,7 +41,13 @@ func GetPerson(w http.ResponseWriter, req *http.Request) {
 }
 
 func CreatePerson(w http.ResponseWriter, req *http.Request) {
+	var person Person
+	_ = json.NewDecoder(req.Body).Decode(&person)
 
+	person.Id = strconv.FormatInt(int64(len(people)+1), 10)
+
+	people = append(people, person)
+	json.NewEncoder(w).Encode(people)
 }
 
 func UpdatePerson(w http.ResponseWriter, req *http.Request) {
