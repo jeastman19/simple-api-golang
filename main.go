@@ -35,6 +35,8 @@ func GetPerson(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 	}
+
+	json.NewEncoder(w).Encode(&Person{})
 }
 
 func CreatePerson(w http.ResponseWriter, req *http.Request) {
